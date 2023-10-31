@@ -1,0 +1,25 @@
+Package: impactR.utils
+Title: Some utils for working with R
+Version: 0.0.0.9000
+Authors@R: 
+    person("Guillaume", "Noblet", , "gnoblet@zaclys.net", role = c("aut", "cre"))
+Description: Providing functions that may be of common use.
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    dplyr (>= 1.1.0),
+    rlang (>= 0.4.11),
+    glue,
+    stringr,
+    purrr,
+    janitor,
+    readr,
+    readxl
+Depends: 
+    R (>= 2.10)
+LazyData: true
+Suggests: 
+    labelled,
+    roxygen2
+License: MIT + file LICENSE
