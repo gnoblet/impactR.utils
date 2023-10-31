@@ -13,7 +13,7 @@ left_join_dup(df_a, df_b, ..., duplicated_columns = 3)
 
 \item{...}{Columns to join by.}
 
-\item{duplicated_columns}{Strategy between 1 and 4. Default to 3. See section "Treating duplicated columns.}
+\item{duplicated_columns}{Strategy between 1 and 4. Default to 3. See section "Treating duplicated columns".}
 }
 \value{
 A left-joined data frame.

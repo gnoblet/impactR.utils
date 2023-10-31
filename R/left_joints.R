@@ -1,6 +1,6 @@
 #' Left join a list of dataframes
 #'
-#' [left_joints] is a simple reducing functions based on [dplyr::left_join]. [left_joints_dup] is a reduce wrapper around [left_join_dup].
+#' [left_joints()] is a simple reducing functions based on [dplyr::left_join()]. [left_joints_dup()] is a reduce wrapper around [left_join_dup()].
 #'
 #' @param list A list of data frames.
 #' @param ... Columns to join by.

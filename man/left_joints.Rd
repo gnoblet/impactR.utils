@@ -14,11 +14,11 @@ left_joints_dup(list, ..., duplicated_columns = 3)
 
 \item{...}{Columns to join by.}
 
-\item{duplicated_columns}{Strategy between 1 and 4. Default to 3. See section "Treating duplicated columns.}
+\item{duplicated_columns}{Strategy between 1 and 4. Default to 3. See section "Treating duplicated columns".}
 }
 \value{
 A left-joined data frame.
 }
 \description{
-\link{left_joints} is a simple reducing functions based on \link[dplyr:mutate-joins]{dplyr::left_join}. \link{left_joints_dup} is a reduce wrapper around \link{left_join_dup}.
+\code{\link[=left_joints]{left_joints()}} is a simple reducing functions based on \code{\link[dplyr:mutate-joins]{dplyr::left_join()}}. \code{\link[=left_joints_dup]{left_joints_dup()}} is a reduce wrapper around \code{\link[=left_join_dup]{left_join_dup()}}.
 }

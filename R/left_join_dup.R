@@ -3,7 +3,7 @@
 #' @param df_a A dataframe.
 #' @param df_b Another dataframe.
 #' @param ... Columns to join by.
-#' @param duplicated_columns Strategy between 1 and 4. Default to 3. See section "Treating duplicated columns.
+#' @param duplicated_columns Strategy between 1 and 4. Default to 3. See section "Treating duplicated columns".
 #'
 #' @section Treating duplicated columns:
 #'
