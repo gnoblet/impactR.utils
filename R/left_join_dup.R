@@ -67,6 +67,8 @@ left_join_dup <- function(df_a, df_b, ..., duplicated_columns = 3) {
 
     } else if (duplicated_columns == 4) {
 
+      rlang::abort("This feature needs to be implemented.")
+
       # check if it's an exact match including NAs
       nn_id_all <- purrr::map2_lgl(nn, nn.dup_col, \(x,y) identical(joined[[x]], joined[[y]]))
 
