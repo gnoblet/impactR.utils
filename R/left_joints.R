@@ -41,7 +41,7 @@ left_joints_dup <- function(list, ..., duplicated_columns = 3){
 
   joined <- purrr::reduce(
     list,
-    \(x, y) left_join_dup(x, y, quoted_cols, duplicated_columns = duplicated_columns)
+    \(x, y) left_join_dup(x, y, !!!rlang::syms(quoted_cols), duplicated_columns = duplicated_columns)
   )
 
   return(joined)
