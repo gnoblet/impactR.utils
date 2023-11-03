@@ -15,7 +15,8 @@ Imports:
     purrr,
     janitor,
     readr,
-    readxl
+    tibble,
+    rio
 Depends: 
     R (>= 2.10)
 LazyData: true

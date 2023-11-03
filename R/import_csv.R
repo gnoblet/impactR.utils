@@ -7,7 +7,7 @@
 
 #' Initial import with clean names (not an option!)
 #'
-#' @param path The project relative path to the file.
+#' @param path The path to the file.
 #' @param delim Field separator, default is ",".
 #' @param clean_names Boolean. If TRUE, uses [janitor::clean_names()] to column clean names.
 #' @param guess_max Maximum guess of types. Default to 21474836.
@@ -35,7 +35,7 @@ import_csv <- function(path, delim = ",", clean_names = TRUE,  guess_max = 21474
 
 
 
-# XLSX sheet initial import with clean names (not an option!)
+#' XLSX sheet initial import with clean names (not an option!)
 #'
 #' @param sheet A character string of the sheet name or the sheet position
 #'
@@ -44,15 +44,11 @@ import_csv <- function(path, delim = ",", clean_names = TRUE,  guess_max = 21474
 #' @export
 import_xlsx <- function(path, sheet = 1, clean_names = TRUE, guess_max = 21474836){
 
-  if (rlang::is_missing(path)) { rlang::abort("Please provide the path to the file.") }
-  if (!file.exists(path)) { rlang::abort("This file does not exist.") }
-
-  df <- readxl::read_xlsx(path, sheet = sheet, guess_max = 21474836)
-
+  df <- rio::import(path, which = sheet, guess_max = 21474836)
+  df <- tibble::as_tibble(df)
   df <- readr::type_convert(df)
 
   if (clean_names) df <- janitor::clean_names(df)
-
 
   return(df)
 }
@@ -66,17 +62,18 @@ import_xlsx <- function(path, sheet = 1, clean_names = TRUE, guess_max = 2147483
 #' @export
 import_full_xlsx <- function(path = NULL, clean_names = TRUE,  guess_max = 21474836){
 
+  dfs <- rio::import_list(path, guess_max = 21474836)
+  dfs <- purrr::map(
+    dfs,
+    \(x) {
+      df <- tibble::as_tibble(x)
+      df <- readr::type_convert(df)
 
-  if (rlang::is_missing(path)) { rlang::abort("Please provide the path to the file.") }
-  if (!file.exists(path)) { rlang::abort("This file does not exist.") }
+      if (clean_names) df <- janitor::clean_names(df)
 
-  sheet_names <- readxl::excel_sheets(path)
+      return(df)
+    }
+  )
 
-  # Map xlsx_import
-  sheets <- purrr::map(sheet_names, \(x) import_xlsx(path, sheet = x, clean_names = clean_names, guess_max = guess_max))
-
-  # Name sheets
-  sheets <- purrr::set_names(sheets, sheet_names)
-
-  return(sheets)
+  return(dfs)
 }

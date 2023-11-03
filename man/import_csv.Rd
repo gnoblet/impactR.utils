@@ -13,7 +13,7 @@ import_xlsx(path, sheet = 1, clean_names = TRUE, guess_max = 21474836)
 import_full_xlsx(path = NULL, clean_names = TRUE, guess_max = 21474836)
 }
 \arguments{
-\item{path}{The project relative path to the file.}
+\item{path}{The path to the file.}
 
 \item{delim}{Field separator, default is ",".}
 
