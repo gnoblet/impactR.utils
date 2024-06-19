@@ -121,34 +121,3 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
 
   return(r)
 }
-
-
-# # Example usage
-df <- tibble::tibble(
-  group1 = sample(rep(c("A", "A", "B", "B", "C", "C"), 100)),
-  group2 = sample(rep(c("idp", "displaced", "idp", "displaced", "idp", "displaced"), 100)),
-  col1 = sample(rep(c(1, 2, 10, 4, 5, NA), 100)),
-  col2 = rep(c(NA, 2, 3, 4, 8, 6), 100),
-  col3 = rep(c(1, NA, 3, NA, NA, 6), 100)
-)
-
-
-
-count_missing_values(df, vars = c("col1", "col2", "group1"), group = c("group1"))
-t <- count_missing_values(df, vars = c("col1", "col2", "col3"), group = NULL, pivot = T)
-library(impactR.viz)
-t <- t |> dplyr::mutate(prop_na_count_tot = round(prop_na_count_tot * 100, 2))
-bar(
-  t,
-  x = "var",
-  y = "prop_na_count_tot"
-)
-library(gt)
-t |>
-  gt() |>
-  tab_header(
-    title = "Number and proportion of missing values",
-  ) |>
-  fmt_number(
-    columns = c("prop_na_count_tot", "na_count_tot")
-  )
