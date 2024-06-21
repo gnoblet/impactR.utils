@@ -68,7 +68,7 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
       r,
       dplyr::across(
         dplyr::starts_with("missing_"),
-        \(x) x / n_group_tot,
+        \(x) x / !!rlang::sym("n_group_tot"),
         .names = "prop_{.col}")
     )
 
