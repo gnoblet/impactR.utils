@@ -6,6 +6,8 @@
 #' @param arg Default to NULL.
 #'
 #' @return A stop statement
+#'
+#' @export
 if_not_in_stop <- function(df, cols, df_name, arg = NULL) {
   missing_cols <- subvec_not_in(cols, colnames(df))
 
@@ -48,6 +50,8 @@ if_not_in_stop <- function(df, cols, df_name, arg = NULL) {
 #' @param same The same type as arg1
 #'
 #' @return A stop statement
+#'
+#' @export
 abort_bad_argument <- function(arg1, must, not = NULL, arg2 = NULL, same = NULL) {
   msg <- glue::glue("`{arg1}` must {must}")
   if (!is.null(not)) {
