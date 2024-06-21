@@ -23,7 +23,7 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
     if_not_in_stop(df, group, "df", "group")
   }
 
-  # Check if grouping columns are in vars, 
+  # Check if grouping columns are in vars,
   # if yes, warn which ones and remove them
   # Paste collapse with glue '\n'
   if (!is.null(group)) {
@@ -32,7 +32,7 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
         glue::glue(
           "The following grouping columns are in vars and will be removed:\n",
           glue::glue_collapse(
-            group[group %in% vars], 
+            group[group %in% vars],
             sep = ", ",
             last = ", and ")
         )
@@ -68,9 +68,9 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
       r,
       dplyr::across(
         dplyr::starts_with("missing_"),
-        \(x) x / n_tot,
+        \(x) x / n_group_tot,
         .names = "prop_{.col}")
-      )
+    )
 
     # Ungroup
     r <- dplyr::ungroup(r)
@@ -86,7 +86,7 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
         dplyr::all_of(vars),
         \(x) sum(is.na(x)),
         .names = "missing_{.col}")
-      )
+    )
 
     # Mutate
     r <- dplyr::mutate(
@@ -106,17 +106,17 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
       cols = dplyr::starts_with("prop_"),
       names_to = "var",
       values_to = "prop_na_count_tot"
-      )
+    )
 
     r_prop <- dplyr::mutate(
       r_prop, "var" := stringr::str_remove(
-        !!rlang::sym("var"), 
+        !!rlang::sym("var"),
         "prop_missing_")
     )
 
     r_n <- tidyr::pivot_longer(
       dplyr::select(
-        r, 
+        r,
         -c(
           dplyr::starts_with("prop"),
           dplyr::all_of(c("n_tot", "n_group_tot"))
@@ -125,10 +125,10 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
       cols = dplyr::starts_with("missing_"),
       names_to = "var",
       values_to = "na_count_tot"
-      )
+    )
 
     r_n <- dplyr::mutate(
-      r_n, 
+      r_n,
       "var" := stringr::str_remove(
         !!rlang::sym("var"),
         "missing_")
@@ -142,3 +142,4 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
 
   return(r)
 }
+
