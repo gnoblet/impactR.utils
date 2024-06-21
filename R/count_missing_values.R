@@ -4,6 +4,8 @@
 #' @param vars Variable names.
 #' @param group Grouping column names. Default to NULL.
 #' @param pivot Logical. If TRUE, return a pivoted data frame.
+#'
+#' @export
 count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
 
   #------ Checks
@@ -21,14 +23,18 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
     if_not_in_stop(df, group, "df", "group")
   }
 
-  # Check if grouping columns are in vars, if yes, warn which ones and remove them
+  # Check if grouping columns are in vars, 
+  # if yes, warn which ones and remove them
   # Paste collapse with glue '\n'
   if (!is.null(group)) {
     if (any(group %in% vars)) {
       rlang::warn(
         glue::glue(
           "The following grouping columns are in vars and will be removed:\n",
-          glue::glue_collapse(group[group %in% vars], sep = ", ", last = ", and ")
+          glue::glue_collapse(
+            group[group %in% vars], 
+            sep = ", ",
+            last = ", and ")
         )
       )
       vars <- vars[!(vars %in% group)]
@@ -102,16 +108,31 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
       values_to = "prop_na_count_tot"
       )
 
-    r_prop <- dplyr::mutate(r_prop, "var" := stringr::str_remove(!!rlang::sym("var"), "prop_missing_"))
+    r_prop <- dplyr::mutate(
+      r_prop, "var" := stringr::str_remove(
+        !!rlang::sym("var"), 
+        "prop_missing_")
+    )
 
     r_n <- tidyr::pivot_longer(
-      dplyr::select(r, -c(dplyr::starts_with("prop"), dplyr::all_of(c("n_tot", "n_group_tot")))),
+      dplyr::select(
+        r, 
+        -c(
+          dplyr::starts_with("prop"),
+          dplyr::all_of(c("n_tot", "n_group_tot"))
+        )
+      ),
       cols = dplyr::starts_with("missing_"),
       names_to = "var",
       values_to = "na_count_tot"
       )
 
-    r_n <- dplyr::mutate(r_n, "var" := stringr::str_remove(!!rlang::sym("var"), "missing_"))
+    r_n <- dplyr::mutate(
+      r_n, 
+      "var" := stringr::str_remove(
+        !!rlang::sym("var"),
+        "missing_")
+    )
 
     r <- dplyr::left_join(r_prop, r_n, by = c("var", group))
     r <- dplyr::mutate(r, "var" := stringr::str_remove(!!rlang::sym("var"), "prop_missing_"))
