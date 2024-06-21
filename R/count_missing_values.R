@@ -96,13 +96,13 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
   if (pivot) {
 
     r_prop <- tidyr::pivot_longer(
-      dplyr::select(r, -starts_with("missing_")),
+      dplyr::select(r, -dplyr::starts_with("missing_")),
       cols = dplyr::starts_with("prop_"),
       names_to = "var",
       values_to = "prop_na_count_tot"
       )
 
-    r_prop <- dplyr::mutate(r_prop, var = stringr::str_remove(var, "prop_missing_"))
+    r_prop <- dplyr::mutate(r_prop, "var" := stringr::str_remove(!!rlang::sym("var"), "prop_missing_"))
 
     r_n <- tidyr::pivot_longer(
       dplyr::select(r, -c(dplyr::starts_with("prop"), dplyr::all_of(c("n_tot", "n_group_tot")))),
@@ -111,11 +111,11 @@ count_missing_values <- function(df, vars, group = NULL, pivot = TRUE) {
       values_to = "na_count_tot"
       )
 
-    r_n <- dplyr::mutate(r_n, var = stringr::str_remove(var, "missing_"))
+    r_n <- dplyr::mutate(r_n, "var" := stringr::str_remove(!!rlang::sym("var"), "missing_"))
 
     r <- dplyr::left_join(r_prop, r_n, by = c("var", group))
-    r <- dplyr::mutate(r, var = stringr::str_remove(var, "prop_missing_"))
-    r <- dplyr::relocate(r, var, prop_na_count_tot, na_count_tot, .before = dplyr::everything())
+    r <- dplyr::mutate(r, "var" := stringr::str_remove(!!rlang::sym("var"), "prop_missing_"))
+    r <- dplyr::relocate(r, !!rlang::sym("var"), !!rlang::sym("prop_na_count_tot"), !!rlang::sym("na_count_tot"), .before = dplyr::everything())
     r <- dplyr::relocate(r, n_tot, .after = dplyr::everything())
   }
 
